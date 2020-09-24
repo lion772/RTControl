@@ -1,0 +1,2 @@
+# RTControl
+An app about scanning QR codes, using MVVM architecture, databinding, room, retrofit and much more. That's an app dedicated to one friend of mine, who works in a steel factory, and I'm willing to help him receive his year award: "Steel Man Of The Year" . Here I have implemented firebase in conjunction with courotine, to be able to store in the backend and retrieve all users and QR codes of the company documents.
