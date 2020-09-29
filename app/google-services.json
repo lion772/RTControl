@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "136155311421",
+    "firebase_url": "https://ternium-65c1f.firebaseio.com",
+    "project_id": "ternium-65c1f",
+    "storage_bucket": "ternium-65c1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136155311421:android:498bf4590e9ec8bf45e954",
+        "android_client_info": {
+          "package_name": "williamlopes.project.rtcontrol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "136155311421-s805unu043s6hqcr4h6088l8ve5mm621.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "williamlopes.project.rtcontrol",
+            "certificate_hash": "876a4e401db7c73b5304cbd30783aad7e31c77bb"
+          }
+        },
+        {
+          "client_id": "136155311421-6c89rnvn0qrt37fjkcholn4uerdnh81f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNT0KjOv47KGIY3LUG_ITBFn-4oR9v9CQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136155311421-6c89rnvn0qrt37fjkcholn4uerdnh81f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
