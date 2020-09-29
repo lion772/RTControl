@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".view.ListFragment">
 
+    <!-- <androidx.appcompat.widget.Toolbar
+         android:id="@+id/toolbar_list_qr"
+         android:layout_width="match_parent"
+         android:layout_height="?attr/actionBarSize"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"/> -->
 
     <TextView
         android:id="@+id/textView4"
@@ -16,23 +23,22 @@
         android:gravity="center"
         android:text="Futura lista de QR Codes"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/include_drawer_layout"
         app:layout_constraintStart_toStartOf="@+id/include_drawer_layout"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Futura lista de QR Codes" />
 
-
     <include
         android:id="@+id/include_drawer_layout"
         layout="@layout/activity_drawer_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-127dp" />
+
+    <include layout="@layout/app_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -40,13 +46,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="29dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_activity"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_sign_in_activity"
         app:layout_constraintVertical_bias="0.95"
         app:srcCompat="@android:drawable/ic_input_add" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

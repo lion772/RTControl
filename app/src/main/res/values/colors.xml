@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ED2621</color>
-    <color name="colorPrimaryDark">#C41C17</color>
+    <color name="colorPrimaryDark">#ED2621</color>
     <color name="colorAccent">#F99700</color>
     <color name="background_ternium">#EA1F2E</color>
 
