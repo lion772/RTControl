@@ -13,7 +13,7 @@ class ListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        getActionBar()?.title = getString(R.string.qrcodes_list)
+        //getActionBar()?.title = getString(R.string.qrcodes_list)
 
         //setupActionBar()
     }
@@ -22,21 +22,7 @@ class ListFragment : Fragment() {
         return (activity as HomeActivity?)?.supportActionBar
     }
 
-    private fun setupActionBar(){
-        //(activity as HomeActivity?)?.setSupportActionBar(toolbar_fragment_list)
-        //toolbar_activity.setNavigationIcon(R.drawable.ic_action_navigation_menu)
-        /*toolbar_activity.setNavigationOnClickListener{
-            tooggleDrawer()
-        }*/
-    }
 
-    /*private fun tooggleDrawer(){
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)){
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            drawer_layout.openDrawer(GravityCompat.START)
-        }
-    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

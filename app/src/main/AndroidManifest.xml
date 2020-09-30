@@ -26,7 +26,6 @@
             android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".ui.home.LoginActivity" />
         <activity
             android:name=".ui.home.IntroActivity"
             android:screenOrientation="portrait"

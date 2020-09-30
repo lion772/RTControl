@@ -84,7 +84,7 @@ class SignUpActivity : BaseActivity() {
     fun userRegisteredSuccess(){
         Toast.makeText(
             this@SignUpActivity,
-            "you have successfully registered.",
+            "Você cadastrou a sua conta com sucesso!",
             Toast.LENGTH_SHORT).show()
         //hideProgressDialog()
         FirebaseAuth.getInstance().signOut()
