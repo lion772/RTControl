@@ -1,3 +1,44 @@
 <resources>
     <string name="app_name">RTControl</string>
+    <string name="app_name_intro">Ternium Control</string>
+    <string name="fulfill_password">Preencha a senha</string>
+    <string name="fulfill_email">Preencha o email</string>
+    <string name="login">Logar</string>
+    <string name="name">Nome</string>
+    <string name="welcome_signup">Bem-vindo ao app Ternium! Por favor, preencha com os seus dados para cadastrar a sua nova conta.</string>
+    <string name="welcome_sigin">Bem-vindo ao app Ternium! Por favor, insira os seus dados para logar.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="image_contentDescription">image</string>
+    <string name="lets_get_started_text">Vamos começar!</string>
+    <string name="intro_text_description">Para ter uma melhor ideia sobre o app Ternium Control, te daremos algumas dicas de como aproveitar.</string>
+    <string name="sign_in">LOGAR</string>
+    <string name="sign_up">CADASTRAR</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="sign_up_description_text">Digite seu nome, email e senha para se registrar com a gente.</string>
+    <string name="password">Senha</string>
+    <string name="email">Email</string>
+    <string name="sign_in_description_text">Digite seu email e senha para logar com a sua conta.</string>
+
+    <string name="please_click_back_again_to_exit">Por favor, clique de volta de novo para sair.</string>
+    <string name="please_wait">Carregando&#8230;</string>
+    <string name="user_details">Detalhes do usuário</string>
+    <string name="qrcodes_list">Lista de QR Codes</string>
+    <string name="login_success">Sucesso ao logar!</string>
+    <string name="login_fail">Ocorreu algum erro ao tentar logar.</string>
+    <string name="signup_fail">Ocorreu algum erro ao tentar cadastrar.</string>
+    <string name="signup_success">Sucesso ao cadastrar!</string>
+    <string name="fail_signup_user_firebasestore">Ocorreu um erro ao registrar o usuário ao banco de dados.</string>
+    <string name="fail_signin_user_firebasestore">Ocorreu um erro ao logar o usuário.</string>
+
+    <string name="nav_my_profile">Meu Perfil</string>
+    <string name="nav_sign_out">Deslogar</string>
+    <string name="app_bar_title">Lista de QR Codes</string>
 </resources>

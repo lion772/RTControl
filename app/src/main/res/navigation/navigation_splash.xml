@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_splash"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="williamlopes.project.rtcontrol.ui.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/next_action"
+            app:destination="@id/introActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/introActivity"
+        android:name="williamlopes.project.rtcontrol.ui.home.IntroActivity"
+        android:label="activity_intro"
+        tools:layout="@layout/activity_intro" />
+</navigation>
