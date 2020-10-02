@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/users_navigation"
-    app:startDestination="@id/list_fragment">
+    app:startDestination="@id/listFragment">
 
     <fragment
         android:id="@+id/detailFragment"
@@ -11,7 +11,7 @@
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" />
     <fragment
-        android:id="@+id/list_fragment"
+        android:id="@+id/listFragment"
         android:name="williamlopes.project.rtcontrol.ui.home.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
@@ -19,4 +19,14 @@
             android:id="@+id/action_listFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
     </fragment>
+    <activity
+        android:id="@+id/signInActivity"
+        android:name="williamlopes.project.rtcontrol.ui.home.SignInActivity"
+        android:label="activity_signin"
+        tools:layout="@layout/activity_signin" />
+    <fragment
+        android:id="@+id/securityFragment"
+        android:name="williamlopes.project.rtcontrol.SecurityFragment"
+        android:label="fragment_security"
+        tools:layout="@layout/fragment_security" />
 </navigation>

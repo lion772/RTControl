@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#FEF200"
+    tools:context=".SecurityFragment">
+
+    <ImageView
+        android:layout_width="330dp"
+        android:layout_height="330dp"
+        android:src="@drawable/norma_seguranca_1" />
+
+    <ImageView
+        android:layout_width="340dp"
+        android:layout_height="340dp"
+        android:src="@drawable/norma_seguranca_2" />
+
+
+</LinearLayout>

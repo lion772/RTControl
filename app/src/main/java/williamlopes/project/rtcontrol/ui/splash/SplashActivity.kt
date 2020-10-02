@@ -15,17 +15,8 @@ class SplashActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        /*window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )*/
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.colorSplash)
-
-        /*val typeFace: Typeface = Typeface.createFromAsset(assets,"carbon bl.ttf")
-        tv_app_name.typeface = typeFace*/
-
-        //Handler().postDelayed({ abrirAutenticacao() }, 2000)
     }
 
     override fun onSupportNavigateUp() = findNavController(R.id.my_fragment).navigateUp()

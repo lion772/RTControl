@@ -13,6 +13,13 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+    </style><style name="AppTheme.NoActionBar.SecurityRules" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">#AF6A00</item>
+        <item name="actionBarStyle">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="botaoPadrao" parent="Theme.AppCompat.Light" >

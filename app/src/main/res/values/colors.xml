@@ -10,4 +10,7 @@
 
     <color name="snackbar_error_color">#F72400</color>
     <color name="colorSplash">#FFFFFF</color>
+    <color name="yellowColorDark">#3D3405</color>
+    <color name="yellowColor">#676215</color>
+
 </resources>
