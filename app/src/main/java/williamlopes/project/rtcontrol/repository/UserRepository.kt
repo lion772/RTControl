@@ -1,22 +1,26 @@
 package williamlopes.project.rtcontrol.repository
 
+import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase
 import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase.registerUserIntoFirebase
-import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase.signInUserIntoFirebaseTeste
+import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase.signInUserIntoFirebase
 import williamlopes.project.rtcontrol.model.User
+import williamlopes.project.rtcontrol.ui.home.HomeActivity
 import williamlopes.project.rtcontrol.util.await
 import williamlopes.project.rtcontrol.ui.home.SignInActivity
 import williamlopes.project.rtcontrol.ui.home.SignUpActivity
 
 class UserRepository(
     private val signupActivity: SignUpActivity,
-    private val signinActivity: SignInActivity
+    private val signinActivity: SignInActivity,
+    private val homeActivity: HomeActivity
 
 ) : BaseRepository() {
 
@@ -56,7 +60,9 @@ class UserRepository(
         return try {
             val data = autenticacao?.signInWithEmailAndPassword(email, password)?.await()
             data?.let {
-                signInUserIntoFirebaseTeste(signinActivity)
+                signInUserIntoFirebase(signinActivity)
+                signInUserIntoFirebase(homeActivity)
+                //ConfiguracaoFirebase.getDataFromFireStore(homeActivity)
                 return data
             }
         } catch (e: java.lang.Exception) {
@@ -64,6 +70,7 @@ class UserRepository(
         }
 
     }
+
 
     fun getFirebaseUser() {
         autenticacao?.signInAnonymously()?.addOnCompleteListener { task ->

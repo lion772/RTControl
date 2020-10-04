@@ -99,7 +99,6 @@ class SignInActivity : BaseActivity() {
         if(validateForm(email, password)){
             showProgressDialog(resources.getString(R.string.please_wait))
             viewModel.signIn(email, password)
-            hideProgressDialog()
         }
     }
 

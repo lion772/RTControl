@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="#FEF200"
-    tools:context=".SecurityFragment">
+    tools:context=".ui.home.SecurityFragment">
 
     <ImageView
         android:layout_width="330dp"

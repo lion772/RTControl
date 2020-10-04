@@ -1,4 +1,4 @@
-package williamlopes.project.rtcontrol
+package williamlopes.project.rtcontrol.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import williamlopes.project.rtcontrol.ui.home.HomeActivity
+import williamlopes.project.rtcontrol.R
 
 class SecurityFragment : Fragment() {
 
@@ -16,7 +16,9 @@ class SecurityFragment : Fragment() {
         getActionBar()?.title = "Normas de Segurança"
         getActionBar()?.setBackgroundDrawable(resources.getDrawable((R.color.yellowColor)))
         val window: Window = (activity?.window) as Window
-        window.statusBarColor = ContextCompat.getColor(activity as HomeActivity, R.color.yellowColorDark)
+        window.statusBarColor = ContextCompat.getColor(activity as HomeActivity,
+            R.color.yellowColorDark
+        )
     }
 
     private fun getActionBar(): androidx.appcompat.app.ActionBar? {
