@@ -1,28 +1,17 @@
 package williamlopes.project.rtcontrol.repository
 
-import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase
-import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase.registerUserIntoFirebase
-import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase.signInUserIntoFirebase
 import williamlopes.project.rtcontrol.model.User
-import williamlopes.project.rtcontrol.ui.home.HomeActivity
+import williamlopes.project.rtcontrol.util.Constants
 import williamlopes.project.rtcontrol.util.await
-import williamlopes.project.rtcontrol.ui.home.SignInActivity
-import williamlopes.project.rtcontrol.ui.home.SignUpActivity
 
-class UserRepository(
-    private val signupActivity: SignUpActivity,
-    private val signinActivity: SignInActivity,
-    private val homeActivity: HomeActivity
-
-) : BaseRepository() {
+@ExperimentalCoroutinesApi
+class UserRepository : BaseRepository() {
 
     private var autenticacao: FirebaseAuth? = ConfiguracaoFirebase.firebaseAutenticacao
     private var actualUser: FirebaseUser? = null
@@ -45,7 +34,7 @@ class UserRepository(
                 ?.createUserWithEmailAndPassword(email, password)?.await()
             val user = autenticacao?.currentUser?.uid?.let { User(it, nome, email) }
             if (user != null) {
-                registerUserIntoFirebase(signupActivity, user)
+                //registerUserIntoFirebase(signupActivity, user)
             }
             return data != null
         } catch (e: java.lang.Exception) {
@@ -53,17 +42,13 @@ class UserRepository(
         }
     }
 
-    @ExperimentalCoroutinesApi
     suspend fun logInWithEmail(
         email: String, password: String
-    ): AuthResult? {
+    ): User? {
         return try {
             val data = autenticacao?.signInWithEmailAndPassword(email, password)?.await()
             data?.let {
-                signInUserIntoFirebase(signinActivity)
-                signInUserIntoFirebase(homeActivity)
-                //ConfiguracaoFirebase.getDataFromFireStore(homeActivity)
-                return data
+                return signInUserIntoFirebase()
             }
         } catch (e: java.lang.Exception) {
             null
@@ -72,19 +57,23 @@ class UserRepository(
     }
 
 
-    fun getFirebaseUser() {
-        autenticacao?.signInAnonymously()?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Sign in success, update UI with the signed-in user's information
-                actualUser = task.result?.user
-                _firebaseUser.postValue(actualUser)
-            } else {
-                // If sign in fails, display a message to the user.
-                actualUser = null
-                _firebaseUser.postValue(actualUser)
-            }
-        }
+    suspend fun getUser():User?{
+        return signInUserIntoFirebase()
     }
 
+    private suspend fun signInUserIntoFirebase(): User? { //Todo changing SignInActivity to Activity, in order to embrace not only one activity.
+        return try {
+            ConfiguracaoFirebase.autenticacao?.currentUser?.uid?.let { Uid ->
+                val documentSnapshot = ConfiguracaoFirebase.fireStore
+                    ?.collection(Constants.USERS)
+                    ?.document(Uid)
+                    ?.get()?.await()
+                return documentSnapshot?.toObject(User::class.java)
+            }
+        } catch (e: java.lang.Exception) {
+            e.cause
+            null
+        }
+    }
 
 }

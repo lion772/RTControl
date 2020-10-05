@@ -47,11 +47,11 @@ class SignUpActivity : BaseActivity() {
     private fun observe(){
 
         viewModel.isUserCreated.observe(this) {isCreated ->
-            if (isCreated){
+           /* if (isCreated){
                 Toast.makeText(this, getString(R.string.signup_success), Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this,  getString(R.string.signup_fail), Toast.LENGTH_SHORT).show()
-            }
+            }*/
         }
 
         viewModel.isLoading.observe(this) { isLoading->

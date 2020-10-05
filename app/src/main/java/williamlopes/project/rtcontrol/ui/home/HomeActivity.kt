@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -18,17 +19,30 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import williamlopes.project.rtcontrol.R
-import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase.getDataFromFireStore
 import williamlopes.project.rtcontrol.model.User
 
 class HomeActivity: AppCompatActivity() {
+    private val viewModel:HomeViewModel by viewModel()
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        setNavigationSettings()
+        setupObservable()
+        viewModel.getUser()
+    }
+
+    private fun setupObservable() {
+        viewModel.user.observe(this, { user ->
+            updateNavigationUserDetails(user)
+        })
+    }
+
+    private fun setNavigationSettings() {
         setSupportActionBar(toolbar_activity)
 
         val host: NavHostFragment = supportFragmentManager
@@ -47,23 +61,7 @@ class HomeActivity: AppCompatActivity() {
         setupNavigationMenu(navController)
     }
 
-
-    /*suspend fun updateNavigationUserDetails(loggedInUser: User, activity: HomeActivity) {
-        try {
-            Glide.with(this).load(loggedInUser.image)
-                .centerCrop()
-                .placeholder(R.drawable.ic_user_place_holder)
-                .into(nav_user_image)
-
-            tv_username.text = loggedInUser.name
-            //signInUserIntoFirebase(activity)
-        } catch (e: Exception) {
-            e.cause
-        }
-    }*/
-
-    @ExperimentalCoroutinesApi
-    suspend fun updateNavigationUserDetails(loggedInUser: User, activity: HomeActivity) {
+    private fun updateNavigationUserDetails(loggedInUser: User) {
         try {
             Glide.with(this)
                 .load(loggedInUser.image)
@@ -71,10 +69,9 @@ class HomeActivity: AppCompatActivity() {
                 .transform(CircleCrop())
                 .skipMemoryCache(true)
                 .placeholder(R.drawable.ic_user_place_holder)
-                .into(nav_user_image)
+                .into(iv_user_profile)
 
             tv_username.text = loggedInUser.name
-           getDataFromFireStore(this)
         } catch (e: Exception) {
             e.cause
         }

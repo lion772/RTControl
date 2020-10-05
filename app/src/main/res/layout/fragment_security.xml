@@ -9,13 +9,13 @@
     tools:context=".ui.home.SecurityFragment">
 
     <ImageView
-        android:layout_width="330dp"
+        android:layout_width="350dp"
         android:layout_height="330dp"
         android:src="@drawable/norma_seguranca_1" />
 
     <ImageView
         android:layout_width="340dp"
-        android:layout_height="340dp"
+        android:layout_height="360dp"
         android:src="@drawable/norma_seguranca_2" />
 
 

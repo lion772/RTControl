@@ -36,8 +36,7 @@ class SignInActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        val currentUser: FirebaseUser? = autenticacao?.currentUser
-        verifyUser(currentUser)
+        //verifyUser(currentUser)
     }
 
     private fun verifyUser(actualUser: FirebaseUser?) {
@@ -63,13 +62,9 @@ class SignInActivity : BaseActivity() {
 
     private fun observe(){
 
-        viewModel.isUserCreated.observe(this) {isCreated ->
-            if (isCreated){
-                Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
-                openMainScreen()
-            } else {
-                Toast.makeText(this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show()
-            }
+        viewModel.isUserCreated.observe(this) {user ->
+            Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
+            signInSuccess(user)
         }
 
         viewModel.isLoading.observe(this) { isLoading->
