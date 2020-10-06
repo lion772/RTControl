@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -17,14 +15,14 @@ class LoginViewModel(
     private val userUseCase: UserUseCase
 ) : ViewModel() {
 
-    private val _user = MutableLiveData<User>()
-    val user: LiveData<User> get() = _user
+    private val _isUserCreated = MutableLiveData<Boolean>()
+    val isUserCreated: LiveData<Boolean> get() = _isUserCreated
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    private val _isUserCreated = MutableLiveData<User>()
-    val isUserCreated: LiveData<User> get() = _isUserCreated
+    private val _userCreated = MutableLiveData<User>()
+    val userCreated: LiveData<User> get() = _userCreated
 
     private var _firebaseUser = MutableLiveData<AuthResult>()
     val firebaseUser: LiveData<AuthResult> get() = _firebaseUser
@@ -36,10 +34,10 @@ class LoginViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val response = userUseCase.signUpAwait(nome, email, password)
             if (response) {
-                //_isUserCreated.postValue(true)
+                _isUserCreated.postValue(true)
                 _isLoading.postValue(false)
             } else {
-                //_isUserCreated.postValue(false)
+                _isUserCreated.postValue(false)
                 _isLoading.postValue(false)
             }
 
@@ -52,7 +50,7 @@ class LoginViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val response = userUseCase.signInAwait(email, password)
             if (response != null) {
-                _isUserCreated.postValue(response)
+                _userCreated.postValue(response)
             }
             _isLoading.postValue(false)
         }

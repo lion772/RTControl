@@ -62,7 +62,7 @@ class SignInActivity : BaseActivity() {
 
     private fun observe(){
 
-        viewModel.isUserCreated.observe(this) {user ->
+        viewModel.userCreated.observe(this) { user ->
             Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
             signInSuccess(user)
         }

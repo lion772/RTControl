@@ -56,22 +56,7 @@ object ConfiguracaoFirebase {
             return firebaseStore
         }
 
-    fun registerUserIntoFirebase(activity: SignUpActivity, userInfo: User) {
-        autenticacao?.currentUser?.uid?.let { Uid ->
-            fireStore?.collection(Constants.USERS)
-                ?.document(Uid)
-                ?.set(userInfo, SetOptions.merge())
-                ?.addOnSuccessListener {
-                    activity.userRegisteredSuccess()
-                }?.addOnFailureListener { e ->
-                    Toast.makeText(
-                        activity.applicationContext,
-                        "${activity.applicationContext.getString(R.string.fail_signup_user_firebasestore)}: $e",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-        }
-    }
+
 
 
 

@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_signup.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import williamlopes.project.rtcontrol.R
 import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase
@@ -46,12 +47,12 @@ class SignUpActivity : BaseActivity() {
 
     private fun observe(){
 
-        viewModel.isUserCreated.observe(this) {isCreated ->
-           /* if (isCreated){
-                Toast.makeText(this, getString(R.string.signup_success), Toast.LENGTH_SHORT).show()
+        viewModel.isUserCreated.observe(this) { isCreated ->
+            if (isCreated){
+                userRegisteredSuccess()
             } else {
                 Toast.makeText(this,  getString(R.string.signup_fail), Toast.LENGTH_SHORT).show()
-            }*/
+            }
         }
 
         viewModel.isLoading.observe(this) { isLoading->
@@ -81,18 +82,18 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
-    fun userRegisteredSuccess(){
+    private fun userRegisteredSuccess(){
         Toast.makeText(
             this@SignUpActivity,
             "Você cadastrou a sua conta com sucesso!",
             Toast.LENGTH_SHORT).show()
-        //hideProgressDialog()
         FirebaseAuth.getInstance().signOut()
         finish()
     }
 
+    @ExperimentalCoroutinesApi
     fun registerUser(){
-        val name = et_name.text.toString().trim{ it <= ' '} //it eliminates all empty spaces in the name or email adress
+        val name = et_name.text.toString().trim{ it <= ' '}
         val email = et_email.text.toString().trim{ it <= ' '}
         val password = et_password.text.toString().trim{ it <= ' '}
 

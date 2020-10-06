@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import williamlopes.project.rtcontrol.model.User
 import williamlopes.project.rtcontrol.usecase.UserUseCase
@@ -16,6 +17,7 @@ class HomeViewModel(
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user
 
+    @ExperimentalCoroutinesApi
     fun getUser(){
         viewModelScope.launch(Dispatchers.IO) {
             userUseCase.getNomeUserInfo()?.let {userInfo ->
