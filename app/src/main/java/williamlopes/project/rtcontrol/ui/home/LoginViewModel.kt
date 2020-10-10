@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import williamlopes.project.rtcontrol.model.User
 import williamlopes.project.rtcontrol.usecase.UserUseCase
 
+@ExperimentalCoroutinesApi
 class LoginViewModel(
     private val userUseCase: UserUseCase
 ) : ViewModel() {
@@ -28,7 +29,6 @@ class LoginViewModel(
     val firebaseUser: LiveData<AuthResult> get() = _firebaseUser
 
 
-    @ExperimentalCoroutinesApi
     fun signUp(nome: String, email: String, password: String) {
         _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
@@ -44,7 +44,6 @@ class LoginViewModel(
         }
     }
 
-    @ExperimentalCoroutinesApi
     fun signIn(email: String, password: String) {
         _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {

@@ -99,7 +99,6 @@ class HomeActivity: AppCompatActivity() {
         } ?: run { false }
     }
 
-    override fun onSupportNavigateUp() =
-        findNavController(R.id.host_fragment).navigateUp(appBarConfiguration)
+    override fun onSupportNavigateUp() = findNavController(R.id.host_fragment).navigateUp(appBarConfiguration)
 
 }
