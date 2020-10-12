@@ -1,16 +1,13 @@
 package williamlopes.project.rtcontrol.repository
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import williamlopes.project.rtcontrol.R
 import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase
 import williamlopes.project.rtcontrol.model.User
-import williamlopes.project.rtcontrol.ui.home.SignUpActivity
 import williamlopes.project.rtcontrol.util.Constants
 import williamlopes.project.rtcontrol.util.await
 
@@ -37,16 +34,18 @@ class UserRepository : BaseRepository() {
             val data = autenticacao
                 ?.createUserWithEmailAndPassword(email, password)?.await()
             val user = autenticacao?.currentUser?.uid?.let { User(it, nome, email) }
-            if (user != null) {
+            user?.let {
                 registerUserIntoFirebase(user)
-            }
+            } ?: run { false }
+
             return data != null
         } catch (e: java.lang.Exception) {
             false
         }
     }
 
-    suspend fun registerUserIntoFirebase(userInfo: User?):Boolean? {
+
+    private suspend fun registerUserIntoFirebase(userInfo: User?): Boolean? {
 
         return try {
             ConfiguracaoFirebase.autenticacao?.currentUser?.uid?.let { Uid ->

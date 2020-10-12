@@ -36,12 +36,13 @@ class SignInActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        //verifyUser(currentUser)
+        verifyUser()
     }
 
-    private fun verifyUser(actualUser: FirebaseUser?) {
+    private fun verifyUser() {
         val actualUser = autenticacao?.currentUser
         actualUser?.let { openMainScreen() }
+        //todo perguntar ao Valmir sobre quando colocar a verificação de usuário
     }
 
     private fun setupActionBar() {

@@ -13,9 +13,6 @@ class UserUseCase(private val userRepository: UserRepository) {
     suspend fun signInAwait(email:String, password:String): User? =
         userRepository.logInWithEmail(email, password)
 
-    /*
-    suspend fun setUserInfo() = userRepository.registerUserIntoFirebase()*/
-
     suspend fun getNomeUserInfo():User? = userRepository.getUser()
 
 

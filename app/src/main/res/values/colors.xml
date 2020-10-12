@@ -12,5 +12,6 @@
     <color name="colorSplash">#FFFFFF</color>
     <color name="yellowColorDark">#3D3405</color>
     <color name="yellowColor">#676215</color>
+    <color name="red_theme">#ED2621</color>
 
 </resources>

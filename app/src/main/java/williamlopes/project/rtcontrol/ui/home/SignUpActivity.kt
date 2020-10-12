@@ -36,11 +36,10 @@ class SignUpActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        val currentUser: FirebaseUser? = autenticacao?.currentUser
-        verifyUser(currentUser)
+        verifyUser()
     }
 
-    private fun verifyUser(actualUser: FirebaseUser?) {
+    private fun verifyUser() {
         val actualUser = autenticacao?.currentUser
         actualUser?.let { openMainScreen() }
     }

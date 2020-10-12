@@ -18,6 +18,12 @@
         <action
             android:id="@+id/action_listFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_securityFragment"
+            app:destination="@id/securityFragment" />
     </fragment>
     <activity
         android:id="@+id/signInActivity"
@@ -29,4 +35,9 @@
         android:name="williamlopes.project.rtcontrol.ui.home.SecurityFragment"
         android:label="fragment_security"
         tools:layout="@layout/fragment_security" />
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:name="williamlopes.project.rtcontrol.ui.home.MyProfileFragment"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" />
 </navigation>

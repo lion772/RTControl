@@ -73,7 +73,7 @@ class HomeActivity: AppCompatActivity() {
 
             tv_username.text = loggedInUser.name
         } catch (e: Exception) {
-            e.cause
+            e.printStackTrace()
         }
     }
 

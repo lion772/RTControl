@@ -41,4 +41,9 @@
     <string name="nav_my_profile">Meu Perfil</string>
     <string name="nav_sign_out">Deslogar</string>
     <string name="app_bar_title">Lista de QR Codes</string>
+
+    <string name="mobile">Celular</string>
+    <string name="update">ATUALIZAR</string>
+    <string name="my_profile">Meu Perfil</string>
+    <string name="user_profile">Perfil do Usuário</string>
 </resources>
