@@ -1,4 +1,4 @@
-package williamlopes.project.rtcontrol.ui.splash
+package williamlopes.project.rtcontrol.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import williamlopes.project.rtcontrol.R
 import williamlopes.project.rtcontrol.base.BaseFragment
+import williamlopes.project.rtcontrol.ui.viewmodel.SplashViewModel
 
 class SplashFragment : BaseFragment<SplashViewModel>(SplashViewModel::class) {
 

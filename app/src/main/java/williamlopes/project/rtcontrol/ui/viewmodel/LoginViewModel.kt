@@ -1,4 +1,4 @@
-package williamlopes.project.rtcontrol.ui.home
+package williamlopes.project.rtcontrol.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -48,10 +48,16 @@ class LoginViewModel(
         _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             val response = userUseCase.signInAwait(email, password)
-            if (response != null) {
-                _userCreated.postValue(response)
+            response?.let {user ->
+                _userCreated.postValue(user)
+                _isLoading.postValue(false)
+            } ?: run {
+                _userCreated.postValue(null)
+                _isLoading.postValue(false)
             }
-            _isLoading.postValue(false)
+
+
+
         }
     }
 

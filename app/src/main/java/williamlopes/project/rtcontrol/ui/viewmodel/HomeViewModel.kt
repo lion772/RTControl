@@ -1,5 +1,6 @@
-package williamlopes.project.rtcontrol.ui.home
+package williamlopes.project.rtcontrol.ui.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,15 +12,16 @@ import williamlopes.project.rtcontrol.model.User
 import williamlopes.project.rtcontrol.usecase.UserUseCase
 
 class HomeViewModel(
+    application: Application,
     private val userUseCase: UserUseCase
-): ViewModel() {
+): BaseViewModel(application) {
 
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user
 
     @ExperimentalCoroutinesApi
     fun getUser(){
-        viewModelScope.launch(Dispatchers.IO) {
+        launch {
             userUseCase.getNomeUserInfo()?.let {userInfo ->
                 _user.postValue(userInfo)
             }

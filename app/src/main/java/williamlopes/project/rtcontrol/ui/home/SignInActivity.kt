@@ -6,13 +6,13 @@ import android.text.TextUtils
 import android.view.WindowManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_signin.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import williamlopes.project.rtcontrol.R
 import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase
 import williamlopes.project.rtcontrol.model.User
+import williamlopes.project.rtcontrol.ui.viewmodel.LoginViewModel
 
 class SignInActivity : BaseActivity() {
     private val viewModel: LoginViewModel by viewModel()
@@ -23,6 +23,7 @@ class SignInActivity : BaseActivity() {
         setContentView(R.layout.activity_signin)
         autenticacao = ConfiguracaoFirebase.firebaseAutenticacao
         //autenticacao?.signOut()
+        verifyUser()
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -32,11 +33,6 @@ class SignInActivity : BaseActivity() {
         setupActionBar()
         observe()
         btnSetClickListener()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        verifyUser()
     }
 
     private fun verifyUser() {
@@ -64,8 +60,13 @@ class SignInActivity : BaseActivity() {
     private fun observe(){
 
         viewModel.userCreated.observe(this) { user ->
-            Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
-            signInSuccess(user)
+            user?.let {
+                Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
+                signInSuccess(user)
+            } ?: run {
+                Toast.makeText(this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         viewModel.isLoading.observe(this) { isLoading->

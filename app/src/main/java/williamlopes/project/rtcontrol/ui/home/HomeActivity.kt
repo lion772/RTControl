@@ -2,10 +2,8 @@ package williamlopes.project.rtcontrol.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -22,11 +20,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import williamlopes.project.rtcontrol.R
 import williamlopes.project.rtcontrol.model.User
+import williamlopes.project.rtcontrol.ui.viewmodel.HomeViewModel
 
 class HomeActivity: AppCompatActivity() {
-    private val viewModel:HomeViewModel by viewModel()
+    private val viewModel: HomeViewModel by viewModel()
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)

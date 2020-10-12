@@ -6,12 +6,12 @@ import android.text.TextUtils
 import android.view.WindowManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_signup.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import williamlopes.project.rtcontrol.R
 import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase
+import williamlopes.project.rtcontrol.ui.viewmodel.LoginViewModel
 
 class SignUpActivity : BaseActivity() {
     private val viewModel: LoginViewModel by viewModel()
@@ -84,7 +84,7 @@ class SignUpActivity : BaseActivity() {
     private fun userRegisteredSuccess(){
         Toast.makeText(
             this@SignUpActivity,
-            "Você cadastrou a sua conta com sucesso!",
+            getString(R.string.signed_up_with_success),
             Toast.LENGTH_SHORT).show()
         FirebaseAuth.getInstance().signOut()
         finish()

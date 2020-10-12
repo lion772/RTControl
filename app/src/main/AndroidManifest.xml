@@ -3,6 +3,8 @@
     package="williamlopes.project.rtcontrol">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".RTControlApplication"
@@ -12,10 +14,6 @@
         android:roundIcon="@mipmap/ic_ternium_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.MyProfileActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
         <activity android:name=".ui.home.BaseActivity" />
         <activity
             android:name=".ui.home.SignInActivity"

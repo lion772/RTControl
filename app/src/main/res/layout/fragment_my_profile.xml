@@ -30,7 +30,7 @@
                 android:padding="@dimen/my_profile_screen_content_padding">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/iv_user_image"
+                    android:id="@+id/iv_profile_user_image"
                     android:layout_width="@dimen/my_profile_user_image_size"
                     android:layout_height="@dimen/my_profile_user_image_size"
                     android:contentDescription="@string/image_contentDescription"
@@ -55,7 +55,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/my_profile_et_email_marginTop">
 
-                    <!--TODO (Step 4: Here we make the email EditText as focusable false. As it should not be editable.)-->
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/et_email"
                         android:layout_width="match_parent"
