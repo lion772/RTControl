@@ -1,5 +1,7 @@
 package williamlopes.project.rtcontrol.usecase
 
+import android.net.Uri
+import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import williamlopes.project.rtcontrol.model.User
 import williamlopes.project.rtcontrol.repository.UserRepository
@@ -14,6 +16,8 @@ class UserUseCase(private val userRepository: UserRepository) {
         userRepository.logInWithEmail(email, password)
 
     suspend fun getNomeUserInfo():User? = userRepository.getUser()
+
+    suspend fun updateProfileImage(selectedUri:Uri): Task<Uri>? = userRepository.getImage(selectedUri)
 
 
 }

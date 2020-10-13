@@ -7,7 +7,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_signin.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import williamlopes.project.rtcontrol.R
 import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase
@@ -48,16 +48,16 @@ class SignInActivity : BaseActivity() {
             setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
         }
-        toolbar_sign_in_activity.setNavigationOnClickListener{ onBackPressed()}
+        toolbar_sign_in_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
-    fun signInSuccess(loggedInUser: User){
+    fun signInSuccess(loggedInUser: User) {
         openMainScreen()
         finish()
     }
 
 
-    private fun observe(){
+    private fun observe() {
 
         viewModel.userCreated.observe(this) { user ->
             user?.let {
@@ -69,11 +69,11 @@ class SignInActivity : BaseActivity() {
 
         }
 
-        viewModel.isLoading.observe(this) { isLoading->
+        viewModel.isLoading.observe(this) { isLoading ->
             isLoading?.let {
-                if (it){
+                if (it) {
                     showProgressDialog(resources.getString(R.string.please_wait))
-                } else{
+                } else {
                     hideProgressDialog()
                 }
             }
@@ -82,19 +82,18 @@ class SignInActivity : BaseActivity() {
 
 
     @ExperimentalCoroutinesApi
-    private fun btnSetClickListener(){
+    private fun btnSetClickListener() {
         btn_sign_in.setOnClickListener {
             registerUser()
         }
     }
 
     @ExperimentalCoroutinesApi
-    private fun registerUser(){
-        val email = et_email_login.text.toString().trim{ it <= ' '}
-        val password = et_password_login.text.toString().trim{ it <= ' '}
+    private fun registerUser() {
+        val email = et_email_login.text.toString().trim { it <= ' ' }
+        val password = et_password_login.text.toString().trim { it <= ' ' }
 
-        if(validateForm(email, password)){
-            showProgressDialog(resources.getString(R.string.please_wait))
+        if (validateForm(email, password)) {
             viewModel.signIn(email, password)
         }
     }
@@ -115,6 +114,7 @@ class SignInActivity : BaseActivity() {
     }
 
 
-    private fun openMainScreen() = startActivity(Intent(applicationContext, HomeActivity::class.java))
+    private fun openMainScreen() =
+        startActivity(Intent(applicationContext, HomeActivity::class.java))
 
 }
