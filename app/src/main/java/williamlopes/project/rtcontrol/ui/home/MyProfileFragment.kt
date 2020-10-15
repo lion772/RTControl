@@ -1,5 +1,6 @@
 package williamlopes.project.rtcontrol.ui.home
 
+import android.Manifest
 import android.Manifest.*
 import android.app.Activity
 import android.app.Dialog
@@ -7,6 +8,7 @@ import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -37,7 +39,7 @@ import java.io.IOException
 class MyProfileFragment : Fragment() {
     private val viewModel: MyProfileViewModel by viewModel()
     private var selectedImageFileUri: Uri? = null
-    private var profileImageURL: Task<Uri>? = null
+    private var profileImageURL: Uri? = null
     private val contentResolver: ContentResolver? = null
     private lateinit var progressDialog: Dialog
 
@@ -72,82 +74,28 @@ class MyProfileFragment : Fragment() {
     @ExperimentalCoroutinesApi
     private fun setupListener() {
         iv_profile_user_image.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    activity as HomeActivity,
-                    permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-
+            /*if (ContextCompat.checkSelfPermission(activity as HomeActivity, permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
                 showImageChooser()
 
             } else {
-                ActivityCompat.requestPermissions(
-                    activity as HomeActivity,
-                    arrayOf(permission.READ_EXTERNAL_STORAGE),
-                    READ_STORAGE_PERMISSION_CODE
-                )
-            }
+                ActivityCompat.requestPermissions(activity as HomeActivity,
+                    arrayOf(permission.READ_EXTERNAL_STORAGE), READ_STORAGE_PERMISSION_CODE)
+            }*/
+            checkPermissionForExternalStorage()
         }
 
         btn_update.setOnClickListener {
-            GlobalScope.launch(Dispatchers.Main) {
-                delay(200)
+            selectedImageFileUri?.let {
                 viewModel.updateProfileImage(selectedImageFileUri)
-                if (profileImageURL != null) {
-                    Toast.makeText(
-                        activity as HomeActivity,
-                        "Sucesso ao salvar a imagem!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        activity as HomeActivity,
-                        "Erro ao salvar a imagem",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
             }
-
-            //uploadUserImageFromFireStorage(selectedImageFileUri)
-
-        }
-    }
-
-    private fun showImageChooser() {
-        val galleryIntent = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        )
-        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST_CODE)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == READ_STORAGE_PERMISSION_CODE
-            && grantResults.isNotEmpty()
-            && grantResults[0] == PackageManager.PERMISSION_GRANTED
-        ) {
-
-            showImageChooser()
-
-        } else {
-            Toast.makeText(
-                context,
-                getString(R.string.permission_denied_storage),
-                Toast.LENGTH_SHORT
-            ).show()
-
         }
     }
 
     @ExperimentalCoroutinesApi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE_REQUEST_CODE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
             data?.let { DataResult ->
                 selectedImageFileUri = DataResult.data
             }
@@ -159,8 +107,6 @@ class MyProfileFragment : Fragment() {
                     .skipMemoryCache(true)
                     .placeholder(R.drawable.ic_user_place_holder)
                     .into(iv_profile_user_image)
-
-                viewModel.updateProfileImage(selectedImageFileUri)
 
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -179,7 +125,9 @@ class MyProfileFragment : Fragment() {
 
         viewModel.profileImage.observe(viewLifecycleOwner) { uri ->
             uri?.let {
-                profileImageURL = it
+                Toast.makeText(activity as HomeActivity, getString(R.string.success_saving_image), Toast.LENGTH_SHORT).show()
+            } ?: kotlin.run {
+                Toast.makeText(activity as HomeActivity, getString(R.string.fail_saving_image), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -207,30 +155,44 @@ class MyProfileFragment : Fragment() {
         }
     }
 
+    private fun showImageChooser() {
+        val galleryIntent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST_CODE)
+    }
 
-    /*private fun uploadUserImageFromFireStorage(selectedImageFileUri: Uri?) {
-        showProgressDialog(getString(R.string.please_wait))
-
-        selectedImageFileUri?.let { UriFileSelected ->
-            val ref: StorageReference = FirebaseStorage.getInstance().reference
-                .child(
-                    "USER_IMAGE + ${System.currentTimeMillis()}" +
-                            " + . + ${getFileExtension(UriFileSelected)}"
+    private fun checkPermissionForExternalStorage() {
+        return if (Build.VERSION.SDK_INT >= SDK_VALUE) {
+            val resultWrite = ContextCompat.checkSelfPermission(activity as HomeActivity, permission.WRITE_EXTERNAL_STORAGE)
+            val resultRead = ContextCompat.checkSelfPermission(activity as HomeActivity, permission.READ_EXTERNAL_STORAGE)
+            if (resultWrite == PackageManager.PERMISSION_GRANTED && resultRead == PackageManager.PERMISSION_GRANTED) {
+                showImageChooser()
+            } else {
+                ActivityCompat.requestPermissions(activity as HomeActivity, arrayOf(
+                        permission.WRITE_EXTERNAL_STORAGE,
+                        permission.READ_EXTERNAL_STORAGE),
+                        REQUEST_CODE
                 )
-            ref.putFile(UriFileSelected).addOnSuccessListener { taskSnapshot ->
-                taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
-                    profileImageURL = uri.toString()
-                    Log.e("dowloadableUserImage", uri.toString())
-                    //TODO Update User Profile Data.
-                    hideProgressDialog()
-                }
             }
-        }?.addOnFailureListener { exception ->
-            Toast.makeText(context, exception.message, Toast.LENGTH_SHORT).show()
-            hideProgressDialog()
+        } else{
+            showImageChooser()
         }
+    }
 
-    }*/
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+            showImageChooser()
+
+        } else {
+            Toast.makeText(context, getString(R.string.permission_denied_storage), Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     private fun getFileExtension(uri: Uri): String? {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver?.getType(uri))
@@ -239,6 +201,8 @@ class MyProfileFragment : Fragment() {
     companion object {
         private const val READ_STORAGE_PERMISSION_CODE = 1
         private const val PICK_IMAGE_REQUEST_CODE = 2
+        private const val REQUEST_CODE = 1
+        private const val SDK_VALUE = 23
     }
 
     fun showProgressDialog(text: String) {

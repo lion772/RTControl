@@ -17,7 +17,9 @@ class UserUseCase(private val userRepository: UserRepository) {
 
     suspend fun getNomeUserInfo():User? = userRepository.getUser()
 
-    suspend fun updateProfileImage(selectedUri:Uri): Task<Uri>? = userRepository.getImage(selectedUri)
+    suspend fun updateProfileImage(selectedUri:Uri): Uri? = userRepository.getImage(selectedUri)
+
+    //suspend fun updateProfileImage(selectedUri:Uri) = userRepository.getImage(selectedUri)
 
 
 }

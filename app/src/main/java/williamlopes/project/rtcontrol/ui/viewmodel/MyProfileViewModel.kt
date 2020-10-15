@@ -19,8 +19,8 @@ class MyProfileViewModel(
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user
 
-    private val _profileImage = MutableLiveData<Task<Uri>>()
-    val profileImage: LiveData<Task<Uri>> get() = _profileImage
+    private val _profileImage = MutableLiveData<Uri>()
+    val profileImage: LiveData<Uri> get() = _profileImage
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -39,7 +39,7 @@ class MyProfileViewModel(
         _isLoading.value = true
         launch {
             uri?.let {
-                userUseCase.updateProfileImage(it).let { uriImage ->
+                userUseCase.updateProfileImage(it)?.let { uriImage ->
                     _profileImage.postValue(uriImage)
                     _isLoading.postValue(false)
                 }

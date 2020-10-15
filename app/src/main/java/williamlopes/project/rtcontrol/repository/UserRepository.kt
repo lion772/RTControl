@@ -3,6 +3,7 @@ package williamlopes.project.rtcontrol.repository
 import android.content.ContentResolver
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.common.io.Files.getFileExtension
 import com.google.firebase.auth.FirebaseAuth
@@ -92,57 +93,41 @@ class UserRepository : BaseRepository() {
         }
     }
 
-    suspend fun getImage(selectedUri: Uri): Task<Uri>? {
+    suspend fun getImage(selectedUri: Uri): Uri? {
         return uploadUserImageFirebase(selectedUri)
     }
 
-    private suspend fun uploadUserImage(uri: Uri?): Uri? {
+
+    private suspend fun uploadUserImageFirebase(selectedUri: Uri): Uri? {
+        val ref: StorageReference? = FirebaseStorage.getInstance().reference
         return try {
-            val ref: StorageReference? = FirebaseStorage.getInstance().reference
-            val uriFileSelected: Task<Uri>? = FirebaseStorage.getInstance().reference.downloadUrl
-            uri?.let {
-                uriFileSelected?.let {
-                    ref?.child(
-                        "USER_IMAGE - ${System.currentTimeMillis()}" +
-                                " .${getFileExtension(uriFileSelected.toString())}"
-                    )
-                    val taskSnapshot = uri.let { uriFile ->
-                        ref?.putFile(uriFile)?.await()
-                    }
-                    Log.e("dowloadableUserImage", uri.toString())
-                    //TODO Update User Profile Data.
-                    taskSnapshot?.metadata?.reference?.downloadUrl?.let { url ->
-                        return url.result
-                    } ?: run {
-                        return null
-                    }
-                }
-            }
+            val file = Uri.fromFile(File("${selectedUri.path}"))
+            val riversRef:StorageReference? = ref
+                ?.child("images/${file.lastPathSegment}")
+            riversRef?.putFile(file)?.await()
+            return riversRef?.downloadUrl?.await()
         } catch (e: Exception) {
             Log.e("uploadUserImage: ", e.message.toString())
             null
         }
     }
 
-    private suspend fun uploadUserImageFirebase(selectedUri: Uri): Task<Uri>? {
-        val ref: StorageReference? = FirebaseStorage.getInstance().getReference("ParentDataStore")
-        return try {
-            val file = Uri.fromFile(File("$selectedUri"))
-            val riversRef: StorageReference? = ref
-                ?.child("ImageDataStore")
-                ?.child("ProfileImage")
-            val taskSnapshot = riversRef?.putFile(file)?.await()
-            return if (taskSnapshot != null){
-                Log.e("uploadUserImage", taskSnapshot.metadata?.reference?.downloadUrl.toString())
-                taskSnapshot.metadata?.reference?.downloadUrl
-            }else {
-                null
+    /*selectedImageFileUri?.let { UriFileSelected ->
+        val ref: StorageReference = FirebaseStorage.getInstance().reference
+            .child("USER_IMAGE + ${System.currentTimeMillis()}" +
+                    " + . + ${getFileExtension(UriFileSelected)}"
+            )
+        ref.putFile(UriFileSelected).addOnSuccessListener { taskSnapshot ->
+            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {uri ->
+                profileImageURL = uri.toString()
+                Log.e("dowloadableUserImage", uri.toString())
+                //TODO Update User Profile Data.
+                hideProgressDialog()
             }
-        } catch (e: Exception) {
-            Log.e("uploadUserImage: ", e.message.toString())
-            null
         }
-    }
-
+    }?.addOnFailureListener{exception->
+        Toast.makeText(context , exception.message, Toast.LENGTH_SHORT).show()
+        hideProgressDialog()
+    }*/
 
 }
