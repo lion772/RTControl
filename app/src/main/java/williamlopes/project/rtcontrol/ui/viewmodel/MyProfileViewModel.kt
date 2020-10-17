@@ -37,14 +37,13 @@ class MyProfileViewModel(
     @ExperimentalCoroutinesApi
     fun updateProfileImage(uri: Uri?){
         _isLoading.value = true
-        launch {
-            uri?.let {
-                userUseCase.updateProfileImage(it)?.let { uriImage ->
+        uri?.let {
+            userUseCase.updateProfileImage(it) { uriImage, error ->
+                if (error.isNotEmpty()){
+                    val test = error
+                }else{
                     _profileImage.postValue(uriImage)
-                    _isLoading.postValue(false)
                 }
-            } ?: run {
-                _profileImage.postValue(null)
                 _isLoading.postValue(false)
             }
         }

@@ -3,6 +3,7 @@ package williamlopes.project.rtcontrol.repository
 import android.content.ContentResolver
 import android.net.Uri
 import android.util.Log
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.common.io.Files.getFileExtension
@@ -93,41 +94,26 @@ class UserRepository : BaseRepository() {
         }
     }
 
-    suspend fun getImage(selectedUri: Uri): Uri? {
-        return uploadUserImageFirebase(selectedUri)
+    fun getImage(selectedUri: Uri, onComplete: (Uri?, String) -> Unit ) {
+        return uploadUserImageFirebase(selectedUri, onComplete)
     }
 
+    private fun uploadUserImageFirebase(selectedUri: Uri, onComplete: (Uri?, String) -> Unit ) {
 
-    private suspend fun uploadUserImageFirebase(selectedUri: Uri): Uri? {
-        val ref: StorageReference? = FirebaseStorage.getInstance().reference
-        return try {
-            val file = Uri.fromFile(File("${selectedUri.path}"))
-            val riversRef:StorageReference? = ref
-                ?.child("images/${file.lastPathSegment}")
-            riversRef?.putFile(file)?.await()
-            return riversRef?.downloadUrl?.await()
-        } catch (e: Exception) {
-            Log.e("uploadUserImage: ", e.message.toString())
-            null
-        }
-    }
-
-    /*selectedImageFileUri?.let { UriFileSelected ->
         val ref: StorageReference = FirebaseStorage.getInstance().reference
-            .child("USER_IMAGE + ${System.currentTimeMillis()}" +
-                    " + . + ${getFileExtension(UriFileSelected)}"
+            .child("image/${System.currentTimeMillis()}_${selectedUri.lastPathSegment?.split("/")?.last() ?: "image.jpg"}"
             )
-        ref.putFile(UriFileSelected).addOnSuccessListener { taskSnapshot ->
+        ref.putFile(selectedUri).addOnSuccessListener { taskSnapshot ->
             taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {uri ->
-                profileImageURL = uri.toString()
-                Log.e("dowloadableUserImage", uri.toString())
-                //TODO Update User Profile Data.
-                hideProgressDialog()
+               onComplete(uri, "")
             }
+        }.addOnFailureListener{exception->
+            onComplete(null, exception.message ?: "Erro desconhecido")
         }
-    }?.addOnFailureListener{exception->
-        Toast.makeText(context , exception.message, Toast.LENGTH_SHORT).show()
-        hideProgressDialog()
-    }*/
+    }
+
+    private fun getFileExtension(uri: Uri): String? {
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver?.getType(uri))
+    }
 
 }

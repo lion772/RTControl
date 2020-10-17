@@ -50,4 +50,5 @@
     <string name="permission_denied_storage">Oops, você acabou de negar a permissão para armazenamento. Você pode permitir também pelas configurações.</string>
     <string name="success_saving_image">Sucesso ao salvar a imagem</string>
     <string name="fail_saving_image">Erro ao salvar a imagem</string>
+    <string name="profile_picture">MyProfilePicture</string>
 </resources>

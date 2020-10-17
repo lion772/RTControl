@@ -33,6 +33,7 @@ import williamlopes.project.rtcontrol.R
 import williamlopes.project.rtcontrol.model.User
 import williamlopes.project.rtcontrol.ui.viewmodel.MyProfileViewModel
 import williamlopes.project.rtcontrol.util.empty
+import williamlopes.project.rtcontrol.util.showImageUri
 import java.io.IOException
 
 
@@ -74,14 +75,6 @@ class MyProfileFragment : Fragment() {
     @ExperimentalCoroutinesApi
     private fun setupListener() {
         iv_profile_user_image.setOnClickListener {
-            /*if (ContextCompat.checkSelfPermission(activity as HomeActivity, permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED) {
-                showImageChooser()
-
-            } else {
-                ActivityCompat.requestPermissions(activity as HomeActivity,
-                    arrayOf(permission.READ_EXTERNAL_STORAGE), READ_STORAGE_PERMISSION_CODE)
-            }*/
             checkPermissionForExternalStorage()
         }
 
@@ -95,7 +88,7 @@ class MyProfileFragment : Fragment() {
     @ExperimentalCoroutinesApi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE_REQUEST_CODE) {
             data?.let { DataResult ->
                 selectedImageFileUri = DataResult.data
             }
@@ -191,11 +184,6 @@ class MyProfileFragment : Fragment() {
         } else {
             Toast.makeText(context, getString(R.string.permission_denied_storage), Toast.LENGTH_SHORT).show()
         }
-    }
-
-
-    private fun getFileExtension(uri: Uri): String? {
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver?.getType(uri))
     }
 
     companion object {
