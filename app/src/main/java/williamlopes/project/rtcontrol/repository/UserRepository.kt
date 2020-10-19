@@ -1,12 +1,7 @@
 package williamlopes.project.rtcontrol.repository
 
-import android.content.ContentResolver
 import android.net.Uri
 import android.util.Log
-import android.webkit.MimeTypeMap
-import android.widget.Toast
-import com.google.android.gms.tasks.Task
-import com.google.common.io.Files.getFileExtension
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
@@ -15,16 +10,17 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import williamlopes.project.rtcontrol.helper.ConfiguracaoFirebase
 import williamlopes.project.rtcontrol.model.User
 import williamlopes.project.rtcontrol.util.Constants
+import williamlopes.project.rtcontrol.util.Constants.DEFAULT_UPLOAD
+import williamlopes.project.rtcontrol.util.Constants.IMAGE
+import williamlopes.project.rtcontrol.util.Constants.SLACK
+import williamlopes.project.rtcontrol.util.Constants.SUCCESS
 import williamlopes.project.rtcontrol.util.await
-import java.io.File
 
 
 @ExperimentalCoroutinesApi
-class UserRepository : BaseRepository() {
+class UserRepository: BaseRepository() {
 
     private var autenticacao: FirebaseAuth? = ConfiguracaoFirebase.firebaseAutenticacao
-    private var profileImageURL: Uri? = null
-    private val contentResolver: ContentResolver? = null
 
     @ExperimentalCoroutinesApi
     suspend fun signUp(nome: String, email: String, password: String): Boolean {
@@ -89,7 +85,7 @@ class UserRepository : BaseRepository() {
                 return documentSnapshot?.toObject(User::class.java)
             }
         } catch (e: java.lang.Exception) {
-            e.cause
+            Log.e("SignInException","${e.cause}")
             null
         }
     }
@@ -99,21 +95,42 @@ class UserRepository : BaseRepository() {
     }
 
     private fun uploadUserImageFirebase(selectedUri: Uri, onComplete: (Uri?, String) -> Unit ) {
-
         val ref: StorageReference = FirebaseStorage.getInstance().reference
-            .child("image/${System.currentTimeMillis()}_${selectedUri.lastPathSegment?.split("/")?.last() ?: "image.jpg"}"
+            .child("$IMAGE/${autenticacao?.currentUser?.email}/${System.currentTimeMillis()}_${selectedUri.lastPathSegment
+                ?.split(SLACK)?.last() ?: DEFAULT_UPLOAD}"
             )
         ref.putFile(selectedUri).addOnSuccessListener { taskSnapshot ->
             taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {uri ->
-               onComplete(uri, "")
+               onComplete(uri, SUCCESS)
             }
         }.addOnFailureListener{exception->
             onComplete(null, exception.message ?: "Erro desconhecido")
         }
     }
 
-    private fun getFileExtension(uri: Uri): String? {
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver?.getType(uri))
+    suspend fun getChanges(hashMap: HashMap<String, Any>, onComplete:(Uri?, String)-> Unit){
+        anyChangeVerified(hashMap, onComplete)
     }
+
+    private suspend fun anyChangeVerified(userHashMap:HashMap<String, Any>,
+                                          onComplete:(Uri?, String) -> Unit
+                                          ) {
+        val ref: StorageReference = FirebaseStorage.getInstance().reference
+        try {
+            autenticacao?.currentUser?.uid?.let { uid ->
+                val userFromFirebase = ConfiguracaoFirebase.fireStore
+                    ?.collection(Constants.USERS)
+                    ?.document(uid)
+                    ?.update(userHashMap)
+                    ?.await()
+                userFromFirebase?.let {
+                    onComplete(ref.downloadUrl.result, SUCCESS)
+                }
+            }
+        } catch (e: java.lang.Exception) {
+            onComplete(null, "${e.message}")
+        }
+    }
+
 
 }

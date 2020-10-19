@@ -3,6 +3,8 @@ package williamlopes.project.rtcontrol.ui.home
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
+import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -15,21 +17,26 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.fragment_my_profile.view.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import kotlinx.android.synthetic.main.nav_header_main.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import williamlopes.project.rtcontrol.R
+import williamlopes.project.rtcontrol.databinding.ActivityHomeBinding
+import williamlopes.project.rtcontrol.databinding.FragmentMyProfileBinding
 import williamlopes.project.rtcontrol.model.User
 import williamlopes.project.rtcontrol.ui.viewmodel.HomeViewModel
 
 class HomeActivity: AppCompatActivity() {
     private val viewModel: HomeViewModel by viewModel()
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var databinding: ActivityHomeBinding
 
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        databinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
 
         setNavigationSettings()
         setupObservable()

@@ -31,13 +31,10 @@ class SignUpActivity : BaseActivity() {
 
         setupActionBar()
         observe()
+        verifyUser()
         btnSetClickListener()
     }
 
-    override fun onStart() {
-        super.onStart()
-        verifyUser()
-    }
 
     private fun verifyUser() {
         val actualUser = autenticacao?.currentUser

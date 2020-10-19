@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="williamlopes.project.rtcontrol.ui.home.DetailFragment"
+        android:name="williamlopes.project.rtcontrol.ui.home.DetailActivity"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/activity_detail" />
     <fragment
         android:id="@+id/listFragment"
         android:name="williamlopes.project.rtcontrol.ui.home.ListFragment"
