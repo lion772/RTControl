@@ -43,7 +43,6 @@ class MyProfileFragment : Fragment() {
     private var selectedImageFileUri: Uri? = null
     private lateinit var databinding: FragmentMyProfileBinding
     private lateinit var userHashMap: HashMap<String, Any>
-    private lateinit var userDetails: User
     private lateinit var listener:MyProfileFragmentListener
 
     override fun onAttach(context: Context) {
@@ -129,7 +128,6 @@ class MyProfileFragment : Fragment() {
             user?.let {
                 updateNavigationUserDetails(user)
                 databinding.user = user
-                userDetails = user
             }
         }
 
@@ -166,11 +164,11 @@ class MyProfileFragment : Fragment() {
 
     private fun updateUserProfileData(uri: Uri): HashMap<String, Any>? {
 
-        userHashMap = HashMap()
-        userHashMap[Constants.IMAGE] = uri.toString()
-        userHashMap[Constants.NAME] = et_name.text.toString()
-        userHashMap[Constants.MOBILE] = et_mobile.text.toString()
-
+        userHashMap = hashMapOf(
+            Constants.IMAGE to uri.toString(),
+            Constants.NAME to et_name.text.toString(),
+            Constants.MOBILE to et_mobile.text.toString()
+        )
 
         return userHashMap
     }

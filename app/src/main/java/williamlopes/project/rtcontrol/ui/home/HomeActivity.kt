@@ -57,7 +57,7 @@ class HomeActivity : AppCompatActivity(), MyProfileFragmentListener {
     private fun setupObservable() {
         viewModel.user.observe(this, { user ->
             this.databinding.user = user
-            updateNavigationUserDetails()
+            updateNavigationUserDetails(Uri.parse(user.image))
         })
     }
 
@@ -80,10 +80,10 @@ class HomeActivity : AppCompatActivity(), MyProfileFragmentListener {
         setupNavigationMenu(navController)
     }
 
-    private fun updateNavigationUserDetails() {
+    private fun updateNavigationUserDetails(userImage: Uri) {
         try {
             Glide.with(this)
-                .load(user.image.toUri())
+                .load(userImage)
                 .centerCrop()
                 .transform(CircleCrop())
                 .skipMemoryCache(true)

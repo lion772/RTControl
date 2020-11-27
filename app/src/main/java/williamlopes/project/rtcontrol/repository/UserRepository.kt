@@ -76,7 +76,7 @@ class UserRepository: BaseRepository() {
         return signInUserIntoFirebase()
     }
 
-    private suspend fun signInUserIntoFirebase(): User? { //Todo changing SignInActivity to Activity, in order to embrace not only one activity.
+    private suspend fun signInUserIntoFirebase(): User? {
         return try {
             ConfiguracaoFirebase.autenticacao?.currentUser?.uid?.let { Uid ->
                 val documentSnapshot = ConfiguracaoFirebase.fireStore
