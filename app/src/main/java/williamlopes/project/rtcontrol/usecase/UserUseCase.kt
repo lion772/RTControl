@@ -19,7 +19,7 @@ class UserUseCase(private val userRepository: UserRepository) {
 
     fun updateProfileImage(selectedUri:Uri, onComplete: (Uri?, String) -> Unit) = userRepository.getImage(selectedUri, onComplete)
 
-    suspend fun anyChangeVerifiedCase(hashMap: HashMap<String, Any>,
+    fun anyChangeVerifiedCase(hashMap: HashMap<String, Any>,
                                       onComplete:(Uri?, String) -> Unit)
             = userRepository.getChanges(hashMap, onComplete)
 

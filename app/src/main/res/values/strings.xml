@@ -51,4 +51,11 @@
     <string name="success_saving_image">Sucesso ao salvar a imagem</string>
     <string name="fail_saving_image">Erro ao salvar a imagem</string>
     <string name="profile_picture">MyProfilePicture</string>
+
+    <string name="create_board_title">Create Board</string>
+    <string name="create">CRIAR</string>
+    <string name="board_name">Board Name</string>
+    <string name="security_rules">Normas de Segurança</string>
+    <string name="create_board">Criar tabela</string>
+    <string name="Create_board">Criar um quadro</string>
 </resources>

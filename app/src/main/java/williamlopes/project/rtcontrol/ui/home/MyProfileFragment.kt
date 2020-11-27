@@ -1,9 +1,10 @@
 package williamlopes.project.rtcontrol.ui.home
 
-import android.Manifest.*
+import android.Manifest.permission
 import android.app.Activity
 import android.app.Dialog
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -16,35 +17,43 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import kotlinx.android.synthetic.main.dialog_progress.*
 import kotlinx.android.synthetic.main.fragment_my_profile.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import williamlopes.project.rtcontrol.R
 import williamlopes.project.rtcontrol.databinding.FragmentMyProfileBinding
+import williamlopes.project.rtcontrol.helper.extension.toast
 import williamlopes.project.rtcontrol.model.User
 import williamlopes.project.rtcontrol.ui.viewmodel.MyProfileViewModel
 import williamlopes.project.rtcontrol.util.Constants
 import williamlopes.project.rtcontrol.util.empty
 import java.io.IOException
 
+interface MyProfileFragmentListener{
+    fun listenerProfileImage(uri: Uri)
+}
+
 
 class MyProfileFragment : Fragment() {
     private val viewModel: MyProfileViewModel by viewModel()
     private var selectedImageFileUri: Uri? = null
     private lateinit var databinding: FragmentMyProfileBinding
-    private lateinit  var userHashMap: HashMap<String, Any>
-    private var profileImageURL: Uri? = null
+    private lateinit var userHashMap: HashMap<String, Any>
     private lateinit var userDetails: User
-    private val contentResolver: ContentResolver? = null
-    private lateinit var progressDialog: Dialog
+    private lateinit var listener:MyProfileFragmentListener
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            listener = context as MyProfileFragmentListener
+        }catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     @ExperimentalCoroutinesApi
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -73,13 +82,7 @@ class MyProfileFragment : Fragment() {
         viewModel.getUser()
         observeViewModel()
         setupListener()
-        setUploadListener()
     }
-
-    private fun setUploadListener() {
-
-    }
-
 
     @ExperimentalCoroutinesApi
     private fun setupListener() {
@@ -89,15 +92,7 @@ class MyProfileFragment : Fragment() {
 
         btn_update.setOnClickListener {
             selectedImageFileUri?.let {
-                viewModel.apply {
-                    updateProfileImage(selectedImageFileUri)
-                    updateUserProfileData()?.let {hashMapUser ->
-                        GlobalScope.launch(Dispatchers.Main) {
-                            viewModel.anyChangeVerified(hashMapUser)
-                        }
-                    }
-
-                }
+                viewModel.updateProfileImage(selectedImageFileUri)
             }
         }
     }
@@ -107,8 +102,9 @@ class MyProfileFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE_REQUEST_CODE) {
             data?.let { DataResult ->
-                selectedImageFileUri = DataResult.data
-                selectedImageFileUri?.let { updateUserProfileData() }
+                if (!isRemoving && !isDetached) {
+                    selectedImageFileUri = DataResult.data
+                }
             }
             try {
                 Glide.with(this)
@@ -126,6 +122,7 @@ class MyProfileFragment : Fragment() {
         }
     }
 
+    @ExperimentalCoroutinesApi
     private fun observeViewModel() {
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
@@ -138,12 +135,24 @@ class MyProfileFragment : Fragment() {
 
         viewModel.profileImage.observe(viewLifecycleOwner) { uri ->
             uri?.let {
+                updateUserProfileData(it)?.let { hashMapUser ->
+                    viewModel.anyChangeVerified(hashMapUser)
+                }
+
+            } ?: run {
+                context?.toast(getString(R.string.fail_saving_image))
+            }
+        }
+
+        viewModel.profileImageUpload.observe(viewLifecycleOwner) { uriUpload ->
+            uriUpload?.let {
                 Toast.makeText(
                     activity as HomeActivity,
                     getString(R.string.success_saving_image),
                     Toast.LENGTH_SHORT
                 ).show()
-                //(activity as HomeActivity).onBackPressed()
+                listener.listenerProfileImage(uri = it)
+
             } ?: run {
                 Toast.makeText(
                     activity as HomeActivity,
@@ -151,28 +160,19 @@ class MyProfileFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        }
 
-        viewModel.profileImageUpload.observe(viewLifecycleOwner) { uriUpload ->
-            uriUpload?.let {
-                updateUserProfileData()
-            }
         }
     }
 
-    private fun updateUserProfileData():HashMap<String,Any>? {
-        selectedImageFileUri?.let {
-            userHashMap = HashMap()
-                if (selectedImageFileUri != userDetails.image.toUri()) {
-                    userHashMap[Constants.IMAGE] = selectedImageFileUri.toString()
-                }
-                if (et_name.text.toString() != userDetails.name) {
-                    userHashMap[Constants.NAME] = userDetails.name
-                } else if (et_mobile.text.toString() != userDetails.mobile) {
-                    userHashMap[Constants.MOBILE] = userDetails.mobile
-                }
-                return userHashMap
-        } ?: run { return null }
+    private fun updateUserProfileData(uri: Uri): HashMap<String, Any>? {
+
+        userHashMap = HashMap()
+        userHashMap[Constants.IMAGE] = uri.toString()
+        userHashMap[Constants.NAME] = et_name.text.toString()
+        userHashMap[Constants.MOBILE] = et_mobile.text.toString()
+
+
+        return userHashMap
     }
 
     private fun updateNavigationUserDetails(loggedInUser: User) {
@@ -259,19 +259,5 @@ class MyProfileFragment : Fragment() {
         private const val REQUEST_CODE = 1
         private const val SDK_VALUE = 23
     }
-
-    fun showProgressDialog(text: String) {
-        progressDialog = Dialog(activity as HomeActivity)
-        progressDialog.apply {
-            setContentView(R.layout.dialog_progress)
-            progressDialog.tv_progress_text.text = text
-            progressDialog.show()
-        }
-    }
-
-    fun hideProgressDialog() {
-        progressDialog.dismiss()
-    }
-
 
 }

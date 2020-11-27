@@ -15,6 +15,7 @@ import williamlopes.project.rtcontrol.util.Constants.IMAGE
 import williamlopes.project.rtcontrol.util.Constants.SLACK
 import williamlopes.project.rtcontrol.util.Constants.SUCCESS
 import williamlopes.project.rtcontrol.util.await
+import java.net.URI
 
 
 @ExperimentalCoroutinesApi
@@ -101,31 +102,33 @@ class UserRepository: BaseRepository() {
             )
         ref.putFile(selectedUri).addOnSuccessListener { taskSnapshot ->
             taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {uri ->
-               onComplete(uri, SUCCESS)
+               onComplete(uri, "")
+
             }
         }.addOnFailureListener{exception->
             onComplete(null, exception.message ?: "Erro desconhecido")
         }
     }
 
-    suspend fun getChanges(hashMap: HashMap<String, Any>, onComplete:(Uri?, String)-> Unit){
+    fun getChanges(hashMap: HashMap<String, Any>, onComplete:(Uri?, String)-> Unit){
         anyChangeVerified(hashMap, onComplete)
     }
 
-    private suspend fun anyChangeVerified(userHashMap:HashMap<String, Any>,
+    private fun anyChangeVerified(userHashMap:HashMap<String, Any>,
                                           onComplete:(Uri?, String) -> Unit
                                           ) {
         val ref: StorageReference = FirebaseStorage.getInstance().reference
         try {
             autenticacao?.currentUser?.uid?.let { uid ->
-                val userFromFirebase = ConfiguracaoFirebase.fireStore
+                ConfiguracaoFirebase.fireStore
                     ?.collection(Constants.USERS)
                     ?.document(uid)
-                    ?.update(userHashMap)
-                    ?.await()
-                userFromFirebase?.let {
-                    onComplete(ref.downloadUrl.result, SUCCESS)
-                }
+                    ?.set(userHashMap, SetOptions.merge())
+                    ?.addOnSuccessListener {
+                        onComplete(Uri.parse(userHashMap[IMAGE] as String?), "")
+                    }?.addOnFailureListener{
+                        onComplete(null, it.localizedMessage ?: "Erro ao atualizar")
+                    }
             }
         } catch (e: java.lang.Exception) {
             onComplete(null, "${e.message}")

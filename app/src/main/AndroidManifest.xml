@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="williamlopes.project.rtcontrol">
 
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -13,10 +15,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_ternium_icon"
         android:label="Ternium Control"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_ternium_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="24">
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -25,8 +27,13 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
+
+        <activity android:name=".ui.home.CreateBoardActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <activity android:name=".ui.home.BaseActivity" />
         <activity
@@ -37,15 +44,15 @@
         <activity
             android:name=".ui.home.SignUpActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.home.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ui.home.DetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.home.DetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.home.IntroActivity"
             android:screenOrientation="portrait"
@@ -61,7 +68,5 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
 </manifest>
-

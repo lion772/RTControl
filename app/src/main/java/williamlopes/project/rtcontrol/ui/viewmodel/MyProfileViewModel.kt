@@ -5,16 +5,17 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import williamlopes.project.rtcontrol.model.User
 import williamlopes.project.rtcontrol.usecase.UserUseCase
 
-class MyProfileViewModel(
+class MyProfileViewModel @ExperimentalCoroutinesApi constructor(
     application: Application,
     private val userUseCase: UserUseCase
-): BaseViewModel(application) {
+) : BaseViewModel(application) {
 
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user
@@ -32,22 +33,22 @@ class MyProfileViewModel(
     val isLoading: LiveData<Boolean> get() = _isLoading
 
     @ExperimentalCoroutinesApi
-    fun getUser(){
+    fun getUser() {
         launch {
-            userUseCase.getNomeUserInfo()?.let {userInfo ->
+            userUseCase.getNomeUserInfo()?.let { userInfo ->
                 _user.postValue(userInfo)
             }
         }
     }
 
     @ExperimentalCoroutinesApi
-    fun updateProfileImage(uri: Uri?){
+    fun updateProfileImage(uri: Uri?) {
         _isLoading.value = true
         uri?.let {
             userUseCase.updateProfileImage(it) { uriImage, errorMessage ->
-                if (errorMessage.isNotEmpty()){
+                if (errorMessage.isNotEmpty()) {
                     _error.postValue(errorMessage)
-                }else{
+                } else {
                     _profileImage.postValue(uriImage)
                 }
                 _isLoading.postValue(false)
@@ -56,18 +57,18 @@ class MyProfileViewModel(
     }
 
     @ExperimentalCoroutinesApi
-    suspend fun anyChangeVerified(hashMap: HashMap<String, Any>?){
+    fun anyChangeVerified(hashMap: HashMap<String, Any>?) {
         _isLoading.value = true
         hashMap?.let {
-            userUseCase.anyChangeVerifiedCase(it){ mapChange, errorMessage ->
-                if (errorMessage.isNotEmpty()){
+            userUseCase.anyChangeVerifiedCase(it) { mapChange, errorMessage ->
+                if (errorMessage.isNotEmpty()) {
                     _error.postValue(errorMessage)
                 } else {
                     _profileImageUpload.postValue(mapChange)
                 }
-                _isLoading.postValue(false)
             }
         }
+        _isLoading.postValue(false)
     }
 
 }

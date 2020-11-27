@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_listFragment_to_securityFragment"
             app:destination="@id/securityFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_createBoardActivity"
+            app:destination="@id/createBoardActivity" />
     </fragment>
     <activity
         android:id="@+id/signInActivity"
@@ -40,4 +43,9 @@
         android:name="williamlopes.project.rtcontrol.ui.home.MyProfileFragment"
         android:label="fragment_my_profile"
         tools:layout="@layout/fragment_my_profile" />
+    <activity
+        android:id="@+id/createBoardActivity"
+        android:name="williamlopes.project.rtcontrol.ui.home.CreateBoardActivity"
+        android:label="activity_create_board"
+        tools:layout="@layout/activity_create_board" />
 </navigation>
