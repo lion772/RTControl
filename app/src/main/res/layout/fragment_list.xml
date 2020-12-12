@@ -39,6 +39,7 @@
         android:gravity="center"
         android:maxEms="14"
         android:text="@string/opening_text"
+        android:textSize="17sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
