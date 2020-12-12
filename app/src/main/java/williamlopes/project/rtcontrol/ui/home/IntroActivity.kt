@@ -12,7 +12,6 @@ class IntroActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
 
-        window.statusBarColor = ContextCompat.getColor(this, R.color.colorSplash)
         btnSetup()
     }
 

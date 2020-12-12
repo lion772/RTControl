@@ -30,11 +30,6 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".ui.home.CreateBoardActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
         <activity android:name=".ui.home.BaseActivity" />
         <activity
             android:name=".ui.home.SignInActivity"
@@ -52,7 +47,8 @@
         <activity
             android:name=".ui.home.DetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".ui.home.IntroActivity"
             android:screenOrientation="portrait"

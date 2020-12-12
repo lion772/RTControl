@@ -30,7 +30,7 @@
     <string name="please_click_back_again_to_exit">Por favor, clique de volta de novo para sair.</string>
     <string name="please_wait">Carregando&#8230;</string>
     <string name="user_details">Detalhes do usuário</string>
-    <string name="qrcodes_list">Lista de QR Codes</string>
+    <string name="opening_list">Seja Bem-vindo!</string>
     <string name="login_success">Sucesso ao logar!</string>
     <string name="login_fail">Ocorreu algum erro ao tentar logar.</string>
     <string name="signup_fail">Ocorreu algum erro ao tentar cadastrar.</string>
@@ -58,4 +58,5 @@
     <string name="security_rules">Normas de Segurança</string>
     <string name="create_board">Criar tabela</string>
     <string name="Create_board">Criar um quadro</string>
+    <string name="opening_text">Pronto! Agora podemos começar a escanear QR codes. É muito simples, basta clicar no botão abaixo, que uma nova tela surgirá para você escanear.</string>
 </resources>

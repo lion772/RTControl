@@ -123,13 +123,6 @@ class HomeActivity : AppCompatActivity(), MyProfileFragmentListener {
 
     override fun onSupportNavigateUp() = findNavController(R.id.host_fragment).navigateUp(appBarConfiguration)
 
-    companion object {
-        private const val MY_PROFILE_REQUEST_CODE = 11
-        private const val SDK_VALUE = 23
-        private const val REQUEST_CODE = 1
-
-    }
-
     override fun listenerProfileImage(uri: Uri) {
         try {
             Glide.with(this)
