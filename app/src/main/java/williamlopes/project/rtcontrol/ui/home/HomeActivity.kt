@@ -121,8 +121,7 @@ class HomeActivity : AppCompatActivity(), MyProfileFragmentListener {
         } ?: run { false }
     }
 
-    override fun onSupportNavigateUp() =
-        findNavController(R.id.host_fragment).navigateUp(appBarConfiguration)
+    override fun onSupportNavigateUp() = findNavController(R.id.host_fragment).navigateUp(appBarConfiguration)
 
     companion object {
         private const val MY_PROFILE_REQUEST_CODE = 11
